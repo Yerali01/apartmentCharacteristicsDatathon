@@ -33,7 +33,7 @@ function App() {
         setSelectedImage(e.target.result);
         setShowTimer(true);
         setTime(10);
-        setShowResult(false); // Hide the result container
+        setShowResult(false);
       };
       reader.readAsDataURL(file);
     }
@@ -93,7 +93,7 @@ const styles = {
     fontSize: "2rem",
     fontWeight: "normal",
     color: "#333",
-    margin: "2rem 0", // Changed marginBottom to margin
+    margin: "2rem 0",
     textAlign: "center",
   },
   card: {
@@ -140,11 +140,11 @@ const styles = {
     marginTop: "1rem",
   },
   resultContainer: {
-    width: "300px", // Match the width of imageContainer
+    width: "300px",
     padding: "1rem",
     marginTop: "1rem",
     fontSize: "1rem",
-    borderRadius: "8px", // Match the borderRadius of imageContainer
+    borderRadius: "8px",
     backgroundColor: "#f0f0f0",
     fontFamily: "'Raleway', sans-serif",
     textAlign: "center",

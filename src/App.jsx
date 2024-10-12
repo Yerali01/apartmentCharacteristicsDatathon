@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./index.css"; // Add this line to import the CSS
+import "./index.css";
 
 function App() {
   const [selectedImage, setSelectedImage] = useState(null);

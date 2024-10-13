@@ -28,6 +28,11 @@ function App() {
   const [showTable, setShowTable] = useState(false);
   const [tableData, setTableData] = useState([
     { id: "total_rooms", label: "Кол-во комнат", key: "total_rooms" },
+    {
+      id: "number_of_living_rooms",
+      label: "Кол-во жилых комнат",
+      key: "number_of_living_rooms",
+    },
     { id: "area", label: "Общ. площадь", key: "area" },
     { id: "area", label: "Жилая площадь", key: "area" },
     {

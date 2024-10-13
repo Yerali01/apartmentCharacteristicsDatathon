@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import Icons from "../icons/Icons.jsx";
-import './main_laptop.scss';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import "./main_laptop.scss";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const Main = () => {
   const [selectedImages, setSelectedImages] = useState([]);
@@ -65,12 +65,18 @@ const Main = () => {
     onDrop: handleDrop,
   });
 
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      // Optionally, you can show a tooltip or notification that the text was copied
+      console.log("Copied to clipboard");
+    });
+  };
 
   return (
     <div className="page-container">
       <div className="header">
         <div className="logo-section">
-            <img src={Icons.bi_logo} alt="icon" className="icon" />
+          <img src={Icons.bi_logo} alt="icon" className="icon" />
         </div>
         <button className="connect-button">Connect Phone</button>
       </div>
@@ -106,46 +112,118 @@ const Main = () => {
         <div className="table-container">
           <h2 className="container-title">Таблица</h2>
           <div className="table-scroll-container">
-            {loading && (
-              <div className="processing">Обработка...</div>
-            )}
+            {loading && <div className="processing">Обработка...</div>}
             {showTable && responseData && !loading && (
-              <div>
-                <h3>First Layer</h3>
-                <p>
-                  <strong>Number of Living Rooms:</strong>{" "}
-                  {responseData.first_layer.number_of_living_rooms}
-                </p>
-                <p>
-                  <strong>Total Rooms:</strong>{" "}
-                  {responseData.first_layer.total_rooms}
-                </p>
-                <p>
-                  <strong>Total Area:</strong>{" "}
-                  {responseData.first_layer.total_area}
-                </p>
-                <p>
-                  <strong>Living Area:</strong>{" "}
-                  {responseData.first_layer.living_area}
-                </p>
-
-                <h3>Rooms List</h3>
-                <ul>
-                  {responseData.first_layer.rooms_list.map((room, index) => (
-                    <li key={index}>{room}</li>
-                  ))}
-                </ul>
-
-                <h3>Second Layer</h3>
-                <p>
-                  <strong>Bathrooms:</strong>{" "}
-                  {responseData.second_layer.bathrooms}
-                </p>
-                <p>
-                  <strong>Balcony:</strong>{" "}
-                  {responseData.second_layer.balcony}
-                </p>
-              </div>
+              <>
+                <table className="data-table">
+                  <tbody>
+                    <tr>
+                      <td>Кол-во комнат</td>
+                      <td>
+                        {responseData.first_layer.total_rooms}
+                        <button
+                          className="copy-button"
+                          onClick={() =>
+                            copyToClipboard(
+                              responseData.first_layer.total_rooms
+                            )
+                          }
+                        >
+                          <ContentCopyIcon fontSize="small" />
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Кол-во жилых комнат</td>
+                      <td>{responseData.first_layer.number_of_living_rooms}</td>
+                    </tr>
+                    <tr>
+                      <td>Общ. площадь</td>
+                      <td>
+                        {responseData.first_layer.total_area}
+                        <button
+                          className="copy-button"
+                          onClick={() =>
+                            copyToClipboard(responseData.first_layer.total_area)
+                          }
+                        >
+                          <ContentCopyIcon fontSize="small" />
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Жилая площадь</td>
+                      <td>
+                        {responseData.first_layer.living_area}
+                        <button
+                          className="copy-button"
+                          onClick={() =>
+                            copyToClipboard(
+                              responseData.first_layer.living_area
+                            )
+                          }
+                        >
+                          <ContentCopyIcon fontSize="small" />
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Не жилая площадь</td>
+                      <td>
+                        {responseData.first_layer.total_area -
+                          responseData.first_layer.living_area}
+                        <button
+                          className="copy-button"
+                          onClick={() =>
+                            copyToClipboard(
+                              responseData.first_layer.total_area -
+                                responseData.first_layer.living_area
+                            )
+                          }
+                        >
+                          <ContentCopyIcon fontSize="small" />
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Кол-во санузлов</td>
+                      <td>
+                        {responseData.second_layer.bathrooms}
+                        <button
+                          className="copy-button"
+                          onClick={() =>
+                            copyToClipboard(responseData.second_layer.bathrooms)
+                          }
+                        >
+                          <ContentCopyIcon fontSize="small" />
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Кол-во балконов</td>
+                      <td>
+                        {responseData.second_layer.balcony}
+                        <button
+                          className="copy-button"
+                          onClick={() =>
+                            copyToClipboard(responseData.second_layer.bathrooms)
+                          }
+                        >
+                          <ContentCopyIcon fontSize="small" />
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div className="room-list">
+                  <h3>Список Комнат</h3>
+                  <ul>
+                    {responseData.first_layer.rooms_list.map((room, index) => (
+                      <li key={index}>{room}</li>
+                    ))}
+                  </ul>
+                </div>
+              </>
             )}
           </div>
         </div>
@@ -173,6 +251,6 @@ const Main = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Main;

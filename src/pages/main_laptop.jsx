@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
-import "./index.css";
-import biLogo from "./bi_logo.png";
+import Icons from "../icons/Icons.jsx";
+import './main_laptop.scss';
 
-function App() {
+const Main = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [responseData, setResponseData] = useState(null);
@@ -69,7 +69,7 @@ function App() {
     <div className="page-container">
       <div className="header">
         <div className="logo-section">
-          <img src={biLogo} alt="BI Group Logo" className="logo" />
+            <img src={Icons.bi_logo} alt="icon" className="icon" />
         </div>
         <button className="connect-button">Connect Phone</button>
       </div>
@@ -174,4 +174,4 @@ function App() {
   );
 }
 
-export default App;
+export default Main;

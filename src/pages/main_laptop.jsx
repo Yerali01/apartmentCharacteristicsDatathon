@@ -4,12 +4,22 @@ import axios from "axios";
 import Icons from "../icons/Icons.jsx";
 import "./main_laptop.scss";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import ConnectPhonePopup from "../components/ConnectPhonePopup.jsx";
 
 const Main = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [responseData, setResponseData] = useState(null);
   const [showTable, setShowTable] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleConnectPhone = () => {
+    setShowPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
 
   async function sendImage(file) {
     const formData = new FormData();
@@ -65,20 +75,13 @@ const Main = () => {
     onDrop: handleDrop,
   });
 
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text).then(() => {
-      // Optionally, you can show a tooltip or notification that the text was copied
-      console.log("Copied to clipboard");
-    });
-  };
-
   return (
     <div className="page-container">
       <div className="header">
         <div className="logo-section">
           <img src={Icons.bi_logo} alt="icon" className="icon" />
         </div>
-        <button className="connect-button">Connect Phone</button>
+        <button className="connect-button" onClick={handleConnectPhone}>Connect Phone</button>
       </div>
 
       <div className="content-container">
@@ -111,144 +114,99 @@ const Main = () => {
 
         <div className="table-container">
           <h2 className="container-title">Таблица</h2>
-          <div className="table-scroll-container">
-            {loading && <div className="processing">Обработка...</div>}
-            {showTable && responseData && !loading && (
-              <>
+            <div className="table-scroll-container">
+                {loading && <div className="processing">Обработка...</div>}
+                {showTable && responseData && !loading && (
+                    <>
                 <table className="data-table">
-                  <tbody>
-                    <tr>
-                      <td>Кол-во комнат</td>
-                      <td>
-                        {responseData.first_layer.total_rooms}
-                        <button
-                          className="copy-button"
-                          onClick={() =>
-                            copyToClipboard(
-                              responseData.first_layer.total_rooms
-                            )
-                          }
-                        >
-                          <ContentCopyIcon fontSize="small" />
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Кол-во жилых комнат</td>
-                      <td>{responseData.first_layer.number_of_living_rooms}</td>
-                    </tr>
-                    <tr>
-                      <td>Общ. площадь</td>
-                      <td>
-                        {responseData.first_layer.total_area}
-                        <button
-                          className="copy-button"
-                          onClick={() =>
-                            copyToClipboard(responseData.first_layer.total_area)
-                          }
-                        >
-                          <ContentCopyIcon fontSize="small" />
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Жилая площадь</td>
-                      <td>
-                        {responseData.first_layer.living_area}
-                        <button
-                          className="copy-button"
-                          onClick={() =>
-                            copyToClipboard(
-                              responseData.first_layer.living_area
-                            )
-                          }
-                        >
-                          <ContentCopyIcon fontSize="small" />
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Не жилая площадь</td>
-                      <td>
-                        {responseData.first_layer.total_area -
-                          responseData.first_layer.living_area}
-                        <button
-                          className="copy-button"
-                          onClick={() =>
-                            copyToClipboard(
-                              responseData.first_layer.total_area -
-                                responseData.first_layer.living_area
-                            )
-                          }
-                        >
-                          <ContentCopyIcon fontSize="small" />
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Кол-во санузлов</td>
-                      <td>
-                        {responseData.second_layer.bathrooms}
-                        <button
-                          className="copy-button"
-                          onClick={() =>
-                            copyToClipboard(responseData.second_layer.bathrooms)
-                          }
-                        >
-                          <ContentCopyIcon fontSize="small" />
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Кол-во балконов</td>
-                      <td>
-                        {responseData.second_layer.balcony}
-                        <button
-                          className="copy-button"
-                          onClick={() =>
-                            copyToClipboard(responseData.second_layer.bathrooms)
-                          }
-                        >
-                          <ContentCopyIcon fontSize="small" />
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div className="room-list">
-                  <h3>Список Комнат</h3>
-                  <ul>
-                    {responseData.first_layer.rooms_list.map((room, index) => (
-                      <li key={index}>{room}</li>
-                    ))}
-                  </ul>
-                </div>
-              </>
-            )}
-          </div>
+                    <div className="keys">
+                        <div className="row gray">
+                            <span className="tit">Кол-во комнат</span>
+                            <div className="last">
+                                <span className="key">{responseData.first_layer.total_rooms}</span>
+                                <ContentCopyIcon className="copy" />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <span className="tit">Кол-во жилых комнат</span>
+                            <div className="last">
+                                <span className="key">{responseData.first_layer.number_of_living_rooms}</span>
+                                <ContentCopyIcon className="copy" />
+                            </div>
+                        </div>
+                        <div className="row gray">
+                            <span className="tit">Общ. площадь</span>
+                            <div className="last">
+                                <span className="key">{responseData.first_layer.total_area}</span>
+                                <ContentCopyIcon className="copy" />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <span className="tit">Жилая площадь</span>
+                            <div className="last">
+                                <span className="key">{responseData.first_layer.living_area}</span>
+                                <ContentCopyIcon className="copy" />
+                            </div>
+                        </div>
+                        <div className="row gray">
+                            <span className="tit">Не жилая площадь</span>
+                            <div className="last">
+                                <span className="key">{responseData.first_layer.total_area - responseData.first_layer.living_area}</span>
+                                <ContentCopyIcon className="copy" />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <span className="tit">Кол-во санузлов</span>
+                            <div className="last">
+                                <span className="key">{responseData.second_layer.bathrooms}</span>
+                                <ContentCopyIcon className="copy" />
+                            </div>
+                        </div>
+                        <div className="row gray">
+                            <span className="tit">Кол-во балконов</span>
+                            <div className="last">
+                                <span className="key">{responseData.second_layer.balcony}</span>
+                                <ContentCopyIcon className="copy" />
+                            </div>
+                        </div>
+                    </div>
+                    </table>
+                    <div className="room-list">
+                        <h3>Список Комнат</h3>
+                        <ul>
+                            {responseData.first_layer.rooms_list.map((room, index) => (
+                                <span className="tit" key={index}>{room}</span>
+                            ))}
+                        </ul>
+                    </div>
+                </>
+                )}
+            </div>
         </div>
       </div>
 
-      <div className="footer">
-        <div className="footer-item">
-          <span className="footer-text">
-            Вы можете загружать фото напрямую с телефона
-          </span>
-          <button className="footer-button-light">Подключить</button>
+        <div className="footer">
+            <div className="footer-item">
+            <span className="footer-text">
+                Вы можете загружать фото напрямую с телефона
+            </span>
+            <button className="footer-button-light">Подключить</button>
+            </div>
+            <div className="footer-item">
+            <span className="footer-text">
+                Вы можете менять порядок таблицы и поднимать нужные строки
+            </span>
+            <button className="footer-button-light">Редактировать</button>
+            </div>
+            <div className="footer-item">
+            <span className="footer-text">
+                Оцените качество сайта или расскажите про ошибки
+            </span>
+            <button className="footer-button-blue">Оценить</button>
+            </div>
         </div>
-        <div className="footer-item">
-          <span className="footer-text">
-            Вы можете менять порядок таблицы и поднимать нужные строки
-          </span>
-          <button className="footer-button-light">Редактировать</button>
-        </div>
-        <div className="footer-item">
-          <span className="footer-text">
-            Оцените качество сайта или расскажите про ошибки
-          </span>
-          <button className="footer-button-blue">Оценить</button>
-        </div>
-      </div>
+
+        {showPopup && <ConnectPhonePopup onClose={handleClosePopup} />}
     </div>
   );
 };

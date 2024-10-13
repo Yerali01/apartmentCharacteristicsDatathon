@@ -3,6 +3,7 @@ import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import Icons from "../icons/Icons.jsx";
 import './main_laptop.scss';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 const Main = () => {
   const [selectedImages, setSelectedImages] = useState([]);
